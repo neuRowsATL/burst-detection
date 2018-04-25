@@ -9,21 +9,27 @@ The main function used to run the Extended Hill-Valley analysis method is do_ehv
 ALGORITHM PARAMETERS
 Convolution & Smoothing Parameters
 widthConv                 Width of exponential decay convolution function
-tau                       Rate of decay of convolution function
+tau                       Rate of decay of convolution function (See note below)
 amp                       Amplitude of convolution function
 
 widthGauss                Width of Gaussian smoothing kernel
+
+Note: By default, the convolution function uses a hard-coded decay rate that is based on the convWidth parameter. This guarantees that the kernel reaches 0. You can change this behavior within the function using commenting so that the tau parameter is used instead. Note that using tau may result in a convolution kernal that does not reach 0 within the relevant window.
+
 
 Burst Detection
 burst_peak_ratio          Minimum ratio used to qualify height-to-width ratio as burst
 burst_exclusion           Threshold used to exclude burst as analysis signal fluctuates between hills & valleys
 burst_perc_peak           Lower threshold used to determine whether burst event can be terminated
 
+
 Tonic Spiking Detection
 tonic_perc_peak           Minimum ratio used to qualify initial height-to-width ratio as tonic spiking
+tonic_min_perc            Minimum value of analysis signal used to initiate tracking of tonic spiking event
 tonic_peak_ratio          Lower threshold used to determine whether tonic spiking event can be terminated
 tonic_std_max             Threshold on variability (measured by standard deviation) of successive peaks and troughs to determine whether
                           to terminate tonic spiking event.
+
 
 Other Parameters
 peaks_adj_thresh          Threshold used to determine whether to scale peaks and troughs if amplitude of analysis signal is too big
