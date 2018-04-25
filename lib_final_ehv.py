@@ -14,7 +14,12 @@ import scipy.ndimage.filters as filters
 import matplotlib as mpl
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+
 plt.ion()
+
+# If you plan to run the script multiple times and want to compare results,
+# comment the following line so that the figures do not get closed after
+# each run.
 plt.close('all')
 
 #from data_analysis_lib import *
@@ -158,7 +163,25 @@ def make_data_to_signal(data, kwargs={}):
         
     ## Generate basis for convolution function
     convX = np.arange(0., widthConv+step, step)
+    
+    ## Design the convolution kernel
+    ## Two options:
+    ## 1. Kernel decays to 0 based on the width of the convolution kernel
+    ## 2. Kernel decays at a rate, tau, designated by the user
+    ## DEFAULT IS METHOD 1
+    
+    # METHOD 1
+    # The next line uses a decay rate, tau, that guarantees the convolution
+    # kernel reaches 0 within the relevant window.
     convY = np.zeros(len(convX)) + amp*np.exp(-(8*np.log(2)/widthConv)*convX)
+    
+    # METHOD 2
+    # This line should be used if you want to be able to set the decay rate
+    # via a function argument. Note that setting tau as a parameter means
+    # that the convolution function may not reach 0 within the kernel window
+    # and the resulting analysis signal may not be smooth.
+    #convY = np.zeros(len(convX)) + amp*np.exp(-(tau/widthConv)*convX)
+    
     conv = np.append(np.zeros(len(convY)-1), convY)
     
     #convY = convY/np.max(convY)
